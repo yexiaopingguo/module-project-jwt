@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                         .logoutSuccessHandler(this::onLogoutSuccess)
                 )
                 .csrf(AbstractHttpConfigurer::disable)
+                // 禁用session, 使用jwt登入
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
