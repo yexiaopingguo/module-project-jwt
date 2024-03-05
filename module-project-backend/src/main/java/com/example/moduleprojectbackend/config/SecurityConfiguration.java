@@ -2,12 +2,14 @@ package com.example.moduleprojectbackend.config;
 
 import com.example.moduleprojectbackend.entity.RestBean;
 import com.example.moduleprojectbackend.entity.vo.response.AuthorizeVO;
+import com.example.moduleprojectbackend.filter.JwtAuthorizeFilter;
 import com.example.moduleprojectbackend.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
 
@@ -24,6 +27,9 @@ public class SecurityConfiguration {
 
     @Resource
     JwtUtils utils;
+
+    @Resource
+    JwtAuthorizeFilter jwtAuthorizeFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -42,11 +48,16 @@ public class SecurityConfiguration {
                         .logoutUrl("/api/auth/logout")
                         .logoutSuccessHandler(this::onLogoutSuccess)
                 )
+                .exceptionHandling(conf -> conf
+                        .authenticationEntryPoint(this::onExceptionHandle)
+                        .accessDeniedHandler(this::onAccessDenied)
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 // 禁用session, 使用jwt登入
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .addFilterBefore(jwtAuthorizeFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -57,7 +68,7 @@ public class SecurityConfiguration {
         response.getWriter().write(RestBean.failure(401, "登入失败").asJsonString());
     }
 
-    public void onAuthenticationSuccess(HttpServletRequest request,
+    private void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
         response.setContentType("application/json;charset=utf-8");
@@ -74,7 +85,24 @@ public class SecurityConfiguration {
     private void onLogoutSuccess(HttpServletRequest request,
                                  HttpServletResponse response,
                                  Authentication authentication) throws IOException {
+        response.setContentType("application/json;charset=utf-8");
         response.getWriter().write("Logout Success");
     }
+
+    private void onExceptionHandle(HttpServletRequest request,
+                                 HttpServletResponse response,
+                                        AuthenticationException e) throws IOException {
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(RestBean.failure(401, "验证异常").asJsonString());
+    }
+
+    private void onAccessDenied(HttpServletRequest request,
+                                   HttpServletResponse response,
+                                AccessDeniedException e) throws IOException {
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(RestBean.failure(401, "用户权限不足").asJsonString());
+    }
+
+
 
 }
