@@ -21,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Configuration
 public class SecurityConfiguration {
@@ -86,7 +87,13 @@ public class SecurityConfiguration {
                                  HttpServletResponse response,
                                  Authentication authentication) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write("Logout Success");
+        PrintWriter writer = response.getWriter();
+        String authorization = request.getHeader("Authorization");
+        if (utils.invalidateJwt(authorization)) {
+            writer.write(RestBean.success().asJsonString());
+        } else {
+            writer.write(RestBean.failure(400, "退出登入失败").asJsonString());
+        }
     }
 
     private void onExceptionHandle(HttpServletRequest request,
