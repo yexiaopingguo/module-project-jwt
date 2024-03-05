@@ -4,3 +4,8 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+spring:
+  security:
+    jwt:
+      key: testPrivateKey
+      expire: 7
