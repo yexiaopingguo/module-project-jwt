@@ -14,3 +14,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/study
     username: root
     password: y6263309
+  data:
+    redis:
+      host: 120.77.144.37
+      port: 6379
