@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.concurrent.TimeUnit;
@@ -16,11 +18,18 @@ import java.util.concurrent.TimeUnit;
 class ModuleProjectBackendApplicationTests {
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private JavaMailSender javaMailSender;
     @Test
-    void contextLoads() {
-        RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
-        System.out.println(connection.ping());
+    void TestMail() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("15160284336@163.com");
+        message.setTo("1056527538@qq.com");
+        message.setSubject("Test Email1");
+        message.setText("This is a test email.");
+
+        javaMailSender.send(message);
     }
+
+
 
 }

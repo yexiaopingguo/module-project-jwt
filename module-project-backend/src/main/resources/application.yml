@@ -20,3 +20,18 @@ spring:
     redis:
       host: 120.77.144.37
       port: 6379
+  rabbitmq:
+    addresses: 120.77.144.37
+    username: root
+    password: y6263309
+    virtual-host: /
+  mail:
+    host: smtp.163.com
+    username: 15160284336@163.com
+    password: JACYFGHVJTVZFBRS
+    port: 465
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
