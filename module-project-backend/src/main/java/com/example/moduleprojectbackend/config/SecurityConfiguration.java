@@ -21,6 +21,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -63,6 +65,21 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+//                .cors(conf -> {
+//                    CorsConfiguration cors = new CorsConfiguration();
+//                    //添加前端站点地址，这样就可以告诉浏览器信任了
+//                    // cors.addAllowedOrigin("http://localhost:8080");
+//                    // 允许所有
+//                    cors.addAllowedOriginPattern("*");
+//                    //但是这样并不安全，我们应该只许可给我们信任的站点
+//                    cors.setAllowCredentials(true);  //允许跨域请求中携带Cookie
+//                    cors.addAllowedHeader("*");   //其他的也可以配置，为了方便这里就 * 了
+//                    cors.addAllowedMethod("*");
+//                    cors.addExposedHeader("*");
+//                    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//                    source.registerCorsConfiguration("/**", cors);  //直接针对于所有地址生效
+//                    conf.configurationSource(source);
+//                })
                 .addFilterBefore(jwtAuthorizeFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

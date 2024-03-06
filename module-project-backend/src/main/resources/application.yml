@@ -6,6 +6,8 @@ server:
       force: true
 spring:
   security:
+    filter:
+      order: -100
     jwt:
       key: testPrivateKey
       expire: 7
