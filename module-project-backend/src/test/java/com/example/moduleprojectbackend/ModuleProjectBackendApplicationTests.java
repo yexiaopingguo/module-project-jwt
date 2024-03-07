@@ -35,11 +35,7 @@ class ModuleProjectBackendApplicationTests {
 
     @Test
     void Test() {
-        String jsonString = "{\"type\":\"test\",\"email\":\"123@123\",\"code\":123}";
-        Map<String, Object> map = JSON.parseObject(jsonString, new TypeReference<Map<String, Object>>() {});
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
+        System.out.println("hello world");
     }
 
     @Test
