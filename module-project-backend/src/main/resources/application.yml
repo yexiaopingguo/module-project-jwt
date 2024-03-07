@@ -24,7 +24,8 @@ spring:
     addresses: 120.77.144.37
     username: root
     password: y6263309
-    virtual-host: /
+    virtual-host: /test
+    port: 5672
   mail:
     host: smtp.163.com
     username: 15160284336@163.com
