@@ -2,8 +2,10 @@ package com.example.moduleprojectbackend.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.moduleprojectbackend.entity.dto.Account;
+import com.example.moduleprojectbackend.entity.vo.request.EmailRegisterVO;
 import com.example.moduleprojectbackend.mapper.AccountMapper;
 import com.example.moduleprojectbackend.service.AccountService;
 import com.example.moduleprojectbackend.utils.Const;
@@ -16,8 +18,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +37,9 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
 
     @Resource
     FlowUtils flow;
+
+    @Resource
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -74,4 +81,43 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         String key = Const.VERIFY_EMAIL_LIMIT + address;
         return flow.limitOnceCheck(key, 60);
     }
+
+    public String registerEmailAccount(EmailRegisterVO info){
+        String email = info.getEmail();
+        String code = this.getEmailVerifyCode(email);
+        if(code == null) return "请先获取验证码";
+        if(!code.equals(info.getCode())) return "验证码错误，请重新输入";
+        if(this.existsAccountByEmail(email)) return "该邮件地址已被注册";
+        String username = info.getUsername();
+        if(this.existsAccountByUsername(username)) return "该用户名已被他人使用，请重新更换";
+        String password = passwordEncoder.encode(info.getPassword());
+        Account account = new Account(null, info.getUsername(),
+                password, email, Const.ROLE_DEFAULT, new Date());
+        if(!this.save(account)) {
+            return "内部错误，注册失败";
+        } else {
+            this.deleteEmailVerifyCode(email);
+            return null;
+        }
+    }
+
+    private String getEmailVerifyCode(String email){
+        String key = Const.VERIFY_EMAIL_DATA + email;
+        return (String) stringRedisTemplate.opsForValue().get(key);
+    }
+
+    private boolean existsAccountByEmail(String email){
+        return this.baseMapper.exists(Wrappers.<Account>query().eq("email", email));
+    }
+
+    private boolean existsAccountByUsername(String username){
+        return this.baseMapper.exists(Wrappers.<Account>query().eq("username", username))
+                || this.baseMapper.exists(Wrappers.<Account>query().eq("email", username));
+    }
+
+    private void deleteEmailVerifyCode(String email){
+        String key = Const.VERIFY_EMAIL_DATA + email;
+        stringRedisTemplate.delete(key);
+    }
+
 }

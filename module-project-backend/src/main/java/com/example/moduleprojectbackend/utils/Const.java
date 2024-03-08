@@ -13,4 +13,7 @@ public class Const {
 
     //消息队列
     public final static String MQ_MAIL = "mail";
+
+    //用户角色
+    public final static String ROLE_DEFAULT = "user";
 }
