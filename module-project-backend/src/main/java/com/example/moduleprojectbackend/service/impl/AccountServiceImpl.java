@@ -76,7 +76,6 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         }
     }
 
-    @Override
     public boolean verifyLimit(String address) {
         String key = Const.VERIFY_EMAIL_LIMIT + address;
         return flow.limitOnceCheck(key, 60);
@@ -119,5 +118,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         String key = Const.VERIFY_EMAIL_DATA + email;
         stringRedisTemplate.delete(key);
     }
+
+
 
 }
