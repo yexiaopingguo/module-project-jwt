@@ -37,7 +37,7 @@ public class FlowLimitingFilter extends HttpFilter {
     }
 
     private void writeBlockMessage(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        // response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
         writer.write(RestBean.failure(401, "操作频繁，请稍后再试").asJsonString());
