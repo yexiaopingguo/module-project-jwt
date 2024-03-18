@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.TypeReference;
 import com.example.moduleprojectbackend.utils.Const;
+import com.example.moduleprojectbackend.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class ModuleProjectBackendApplicationTests {
@@ -33,32 +35,33 @@ class ModuleProjectBackendApplicationTests {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Test
-    void Test() {
-        System.out.println("hello world");
-    }
+//    @Test
+//    void Test163Mail() {
+//        SimpleMailMessage testMessage = new SimpleMailMessage();
+//        testMessage.setFrom("15160284336@163.com");
+//        testMessage.setTo("1056527538@qq.com");
+//        testMessage.setSubject("Test Email2");
+//        testMessage.setText("This is a test email.");
+//
+//        javaMailSender.send(testMessage);
+//    }
+//
+//    @Test
+//    void TestRedis() {
+//        RedisConnection connection = Objects.requireNonNull(redisTemplate.getConnectionFactory()).getConnection();
+//        System.out.println(connection.ping());
+//    }
+//
+//    @Test
+//    void TestRabbitMQ() {
+//        Map<String, Object> data = Map.of("type","test","email", "123@123", "code", 123);
+//        rabbitTemplate.convertAndSend(Const.MQ_MAIL, JSONObject.toJSONString(data, JSONWriter.Feature.WriteNulls));
+//    }
 
     @Test
-    void Test163Mail() {
-        SimpleMailMessage testMessage = new SimpleMailMessage();
-        testMessage.setFrom("15160284336@163.com");
-        testMessage.setTo("1056527538@qq.com");
-        testMessage.setSubject("Test Email2");
-        testMessage.setText("This is a test email.");
-
-        javaMailSender.send(testMessage);
-    }
-
-    @Test
-    void TestRedis() {
-        RedisConnection connection = Objects.requireNonNull(redisTemplate.getConnectionFactory()).getConnection();
-        System.out.println(connection.ping());
-    }
-
-    @Test
-    void TestRabbitMQ() {
-        Map<String, Object> data = Map.of("type","test","email", "123@123", "code", 123);
-        rabbitTemplate.convertAndSend(Const.MQ_MAIL, JSONObject.toJSONString(data, JSONWriter.Feature.WriteNulls));
+    void TestJwtUtilsAssert() {
+        JwtUtils jwt = new JwtUtils();
+        assertEquals(jwt.convertToken(null), null);
     }
 
 }
