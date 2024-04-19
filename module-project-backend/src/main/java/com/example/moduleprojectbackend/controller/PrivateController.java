@@ -52,6 +52,7 @@ public class PrivateController {
 
             // 添加属性到 JSON 对象
             JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", account.getId());
             jsonObject.put("username", account.getUsername());
             jsonObject.put("email", account.getEmail());
             jsonObject.put("role", account.getRole());
@@ -60,9 +61,5 @@ public class PrivateController {
             response.getWriter().write(RestBean.failure(404, "no user found").asJsonString());
         }
 
-
-
     }
-
-
 }
