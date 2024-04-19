@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
                 sortColumn = "RAND()";
                 break;
             default:
-                throw new IllegalArgumentException("invalid sortMethod");
+                throw new IllegalArgumentException("invalid sortMethod!");
         }
         return productMapper.getProducts(new Page<>(index, number), sortColumn, sortOrder, index * number, number);
     }
