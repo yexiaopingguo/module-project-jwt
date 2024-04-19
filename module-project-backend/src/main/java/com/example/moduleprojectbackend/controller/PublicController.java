@@ -21,4 +21,12 @@ public class PublicController {
         response.getWriter().write(RestBean.success("test success").asJsonString());
     }
 
+    @GetMapping("/test1")
+    public void test1(HttpServletRequest request,
+                     HttpServletResponse response) throws IOException {
+
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(RestBean.success("test success").asJsonString());
+    }
+
 }
