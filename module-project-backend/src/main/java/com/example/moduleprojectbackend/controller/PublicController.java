@@ -18,7 +18,7 @@ public class PublicController {
                      HttpServletResponse response) throws IOException {
 
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(RestBean.success("测试成功").asJsonString());
+        response.getWriter().write(RestBean.success("test success").asJsonString());
     }
 
 }

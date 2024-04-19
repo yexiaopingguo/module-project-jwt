@@ -45,7 +45,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = this.findAccountByNameOrEmail(username);
         if(account == null)
-            throw new UsernameNotFoundException("用户名或密码错误");
+            throw new UsernameNotFoundException("wrong username or password");
         return User
                 .withUsername(account.getUsername())
                 .password(account.getPassword())
@@ -65,7 +65,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     public String registerEmailVerifyCode(String type, String email, String address){
         synchronized (address.intern()) {
             if(!this.verifyLimit(address))
-                return "请求频繁，请稍后再试";
+                return "frequent requests, please try again later";
             Random random = new Random();
             int code = random.nextInt(899999) + 100000;
             Map<String, Object> data = Map.of("type",type,"email", email, "code", code);
@@ -84,16 +84,16 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     public String registerEmailAccount(EmailRegisterVO info){
         String email = info.getEmail();
         String code = this.getEmailVerifyCode(email);
-        if(code == null) return "请先获取验证码";
-        if(!code.equals(info.getCode())) return "验证码错误，请重新输入";
-        if(this.existsAccountByEmail(email)) return "该邮件地址已被注册";
+        if(code == null) return "please get the verification code first";
+        if(!code.equals(info.getCode())) return "verification code is wrong, please re-enter";
+        if(this.existsAccountByEmail(email)) return "this address has been registered";
         String username = info.getUsername();
-        if(this.existsAccountByUsername(username)) return "该用户名已被他人使用，请重新更换";
+        if(this.existsAccountByUsername(username)) return "this username has been used by someone else, please change it again";
         String password = passwordEncoder.encode(info.getPassword());
         Account account = new Account(null, info.getUsername(),
                 password, email, Const.ROLE_DEFAULT, new Date());
         if(!this.save(account)) {
-            return "内部错误，注册失败";
+            return "database error, registration failed";
         } else {
             this.deleteEmailVerifyCode(email);
             return null;

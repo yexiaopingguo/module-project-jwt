@@ -88,7 +88,7 @@ public class SecurityConfiguration {
                                          HttpServletResponse response,
                                          AuthenticationException e) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(RestBean.failure(401, "登入失败").asJsonString());
+        response.getWriter().write(RestBean.failure(401, "login failed").asJsonString());
     }
 
     private void onAuthenticationSuccess(HttpServletRequest request,
@@ -115,7 +115,7 @@ public class SecurityConfiguration {
         if (utils.invalidateJwt(authorization)) {
             writer.write(RestBean.success().asJsonString());
         } else {
-            writer.write(RestBean.failure(400, "退出登入失败").asJsonString());
+            writer.write(RestBean.failure(400, "logout failed").asJsonString());
         }
     }
 
@@ -123,14 +123,14 @@ public class SecurityConfiguration {
                                  HttpServletResponse response,
                                         AuthenticationException e) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(RestBean.failure(401, "验证异常").asJsonString());
+        response.getWriter().write(RestBean.failure(401, "validation exception").asJsonString());
     }
 
     private void onAccessDenied(HttpServletRequest request,
                                    HttpServletResponse response,
                                 AccessDeniedException e) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(RestBean.failure(401, "用户权限不足").asJsonString());
+        response.getWriter().write(RestBean.failure(401, "permission exception").asJsonString());
     }
 
 

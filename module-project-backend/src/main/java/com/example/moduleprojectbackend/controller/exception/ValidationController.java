@@ -20,6 +20,6 @@ public class ValidationController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public String MethodArgumentNotValidError(MethodArgumentNotValidException exception) {
         log.warn("Resolved [{}: {}]", exception.getClass().getName(), exception.getMessage());
-        return RestBean.failure(400, "请求参数有误").asJsonString();
+        return RestBean.failure(400, "the request parameters are incorrect").asJsonString();
     }
 }
