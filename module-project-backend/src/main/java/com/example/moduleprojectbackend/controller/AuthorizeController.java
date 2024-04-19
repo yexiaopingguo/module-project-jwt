@@ -23,13 +23,6 @@ public class AuthorizeController {
     @Resource
     AccountService accountService;
 
-    @GetMapping("/test")
-    public void test(HttpServletRequest request,
-                       HttpServletResponse response) throws IOException {
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(RestBean.success("测试成功").asJsonString());
-    }
-
     @GetMapping("/ask-code")
     public String askVerifyCode(@RequestParam @Email String email,
                                 @RequestParam @Pattern(regexp = "(register|reset)") String type,

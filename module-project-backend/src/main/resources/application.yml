@@ -13,16 +13,16 @@ spring:
       expire: 7
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/study
+    url: jdbc:mysql://39.108.164.12/assignment_6034
     username: root
     password: y6263309
   data:
     redis:
-      host: 120.77.144.37
+      host: 39.108.164.12
       port: 6379
       password: y6263309
   rabbitmq:
-    addresses: 120.77.144.37
+    addresses: 39.108.164.12
     username: root
     password: y6263309
     virtual-host: /test
