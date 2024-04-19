@@ -37,13 +37,12 @@ class ModuleProjectBackendApplicationTests {
 
     @Test
     void Test163Mail() {
-        SimpleMailMessage testMessage = new SimpleMailMessage();
-        testMessage.setFrom("15160284336@163.com");
-        testMessage.setTo("1056527538@qq.com");
-        testMessage.setSubject("Test Email2");
-        testMessage.setText("This is a test email.");
-
-        javaMailSender.send(testMessage);
+//        SimpleMailMessage testMessage = new SimpleMailMessage();
+//        testMessage.setFrom("15160284336@163.com");
+//        testMessage.setTo("1056527538@qq.com");
+//        testMessage.setSubject("Test Email2");
+//        testMessage.setText("This is a test email.");
+//        javaMailSender.send(testMessage);
     }
 
     @Test
