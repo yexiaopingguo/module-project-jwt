@@ -16,4 +16,10 @@ import java.util.List;
 public interface ProductMapper extends BaseMapper<Product> {
     @Select("SELECT product_id, name, price, sales, image_url, detail, add_date FROM db_product ORDER BY ${sortColumn} ${sortOrder} LIMIT #{offset}, #{number}")
     Page<Product> getProducts(Page<Product> page, @Param("sortColumn") String sortColumn, @Param("sortOrder") String sortOrder, @Param("offset") Integer offset, @Param("number") Integer number);
+
+    @Select("SELECT product_id, name, price, sales, image_url, detail, add_date FROM db_product WHERE product_id = ${productId}")
+    Product getProductById(@Param("productId") Integer productId);
+
+    @Select("SELECT product_id, name, price, sales, image_url, detail, add_date FROM db_product WHERE name LIKE '%${name}%'")
+    List<Product> getProductByName(@Param("name") String name);
 }

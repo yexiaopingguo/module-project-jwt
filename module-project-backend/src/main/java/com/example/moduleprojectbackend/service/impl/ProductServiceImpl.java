@@ -34,5 +34,15 @@ public class ProductServiceImpl implements ProductService {
         }
         return productMapper.getProducts(new Page<>(index, number), sortColumn, sortOrder, index * number, number);
     }
+
+    @Override
+    public Product getProductById(Integer productId) {
+        return productMapper.getProductById(productId);
+    }
+
+    @Override
+    public List<Product> getProductByName(String name) {
+        return productMapper.getProductByName(name);
+    }
 }
 

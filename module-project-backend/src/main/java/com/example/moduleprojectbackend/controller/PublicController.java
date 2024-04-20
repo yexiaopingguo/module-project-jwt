@@ -43,6 +43,20 @@ public class PublicController {
         return RestBean.success(productService.getProducts(sortMethod, sortOrder, index, number)).asJsonString();
     }
 
+    @GetMapping("/getProductById")
+    public String getProductById(
+            @RequestParam Integer productId) {
+
+        return RestBean.success(productService.getProductById(productId)).asJsonString();
+    }
+
+    @GetMapping("/getProductByName")
+    public String getProductByName(
+            @RequestParam String name) {
+
+        return RestBean.success(productService.getProductByName(name)).asJsonString();
+    }
+
     @GetMapping("/getComments")
     public String getCommentsByProductId(@RequestParam Integer productId) {
         return RestBean.success(commentService.getCommentsByProductId(productId)).asJsonString();

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ProductService {
     Page<Product> getProducts(String sortMethod, String sortOrder, Integer index, Integer number);
+    Product getProductById(Integer productId);
+    List<Product> getProductByName(String name);
 }
